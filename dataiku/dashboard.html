@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard Client - Cdiscount</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
+            background-color: #f4f6f8;
+            color: #2b2b2b;
+            line-height: 1.6;
+        }
+
+        /* HEADER */
+        .cd-header {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+            padding: 40px 60px;
+            background: linear-gradient(135deg, #003399 0%, #0053b3 100%);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+        }
+
+        .cd-logo-wrapper {
+            flex-shrink: 0;
+            overflow: visible;
+        }
+
+        .cd-logo {
+            height: 40px;
+            width: auto;
+            display: block;
+            overflow: visible;
+        }
+
+        /* TITRE */
+        .cd-title {
+            flex: 1;
+            margin-left: 20px;
+        }
+
+        .cd-title h1 {
+            margin: 0;
+            font-size: 42px;
+            color: #ffffff;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .cd-title span {
+            color: #ff6600;
+            font-weight: 700;
+            font-size: 20px;
+            display: block;
+            margin-top: 2px;
+            text-shadow: none;
+        }
+
+        /* CONTENU */
+        .container {
+            max-width: 1400px;
+            margin: 50px auto;
+            padding: 0 30px;
+        }
+
+        /* CARTES */
+        .card {
+            background: #ffffff;
+            padding: 40px 50px;
+            margin-bottom: 30px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        /* ORANGE */
+        .highlight {
+            border-left: 10px solid #ff6600;
+            background: linear-gradient(to right, #fff6ef 0%, #ffffff 100%);
+        }
+
+        .card h2 {
+            color: #003399;
+            margin-top: 0;
+            font-size: 28px;
+            margin-bottom: 24px;
+            font-weight: 700;
+        }
+
+        .card h3 {
+            color: #0053b3;
+            font-size: 22px;
+            margin-top: 28px;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+
+        .card p {
+            line-height: 1.8;
+            margin: 16px 0;
+            font-size: 16px;
+        }
+
+        .card ul {
+            line-height: 2;
+            margin: 20px 0;
+            padding-left: 30px;
+        }
+
+        .card li {
+            margin: 10px 0;
+            font-size: 16px;
+        }
+
+        /* GRILLE CHARTS */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .chart-card {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .chart-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        .chart-card h3 {
+            color: #003399;
+            margin: 0 0 20px 0;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 350px;
+        }
+
+        /* TABLEAU LTV */
+        .ltv-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            border: 1px solid #e8e8e8;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .ltv-table th {
+            background: #f5f5f5;
+            color: #333;
+            padding: 12px 16px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 13px;
+            border: 1px solid #e8e8e8;
+        }
+
+        .ltv-table thead tr:first-child th:first-child {
+            border-radius: 8px 0 0 0;
+        }
+
+        .ltv-table thead tr:first-child th:last-child {
+            border-radius: 0 8px 0 0;
+            background: linear-gradient(135deg, #003399 0%, #0053b3 100%);
+            color: white;
+        }
+
+        .ltv-table td {
+            padding: 16px 20px;
+            border: 1px solid #e8e8e8;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        .ltv-table tbody tr td:last-child {
+            font-weight: 700;
+            background: linear-gradient(to right, #fff6ef 0%, #ffffff 100%);
+            color: #ff6600;
+            font-size: 18px;
+        }
+
+        .ltv-table tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        /* INSIGHTS */
+        .insight-box {
+            padding: 25px 30px;
+            margin: 20px 0;
+            border-radius: 12px;
+            border-left: 5px solid;
+        }
+
+        .insight-box.paradox {
+            background: linear-gradient(to right, #fff3e6 0%, #ffffff 100%);
+            border-color: #ff9933;
+        }
+
+        .insight-box.email {
+            background: linear-gradient(to right, #e6f3ff 0%, #ffffff 100%);
+            border-color: #0066cc;
+        }
+
+        .insight-box.paid {
+            background: linear-gradient(to right, #e6ffe6 0%, #ffffff 100%);
+            border-color: #33cc33;
+        }
+
+        .insight-box h4 {
+            margin: 0 0 12px 0;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .insight-box.paradox h4 {
+            color: #cc6600;
+        }
+
+        .insight-box.email h4 {
+            color: #004d99;
+        }
+
+        .insight-box.paid h4 {
+            color: #269926;
+        }
+
+        .insight-box p {
+            margin: 0;
+            line-height: 1.7;
+            color: #444;
+        }
+
+        .insight-box strong {
+            color: #003399;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .badge-warning {
+            background: #fff3e6;
+            color: #cc6600;
+        }
+
+        .badge-success {
+            background: #e6ffe6;
+            color: #269926;
+        }
+
+        .badge-info {
+            background: #e6f3ff;
+            color: #004d99;
+        }
+
+        /* KPI CARDS */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .kpi-card {
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            text-align: center;
+            border-top: 4px solid;
+        }
+
+        .kpi-card:nth-child(1) { border-color: #4caf50; }
+        .kpi-card:nth-child(2) { border-color: #2196f3; }
+        .kpi-card:nth-child(3) { border-color: #ff6600; }
+        .kpi-card:nth-child(4) { border-color: #9c27b0; }
+
+        .kpi-value {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .kpi-card:nth-child(1) .kpi-value { color: #4caf50; }
+        .kpi-card:nth-child(2) .kpi-value { color: #2196f3; }
+        .kpi-card:nth-child(3) .kpi-value { color: #ff6600; }
+        .kpi-card:nth-child(4) .kpi-value { color: #9c27b0; }
+
+        .kpi-label {
+            font-size: 14px;
+            color: #666;
+            font-weight: 500;
+        }
+
+        blockquote {
+            margin: 24px 0;
+            padding: 30px 40px;
+            background: linear-gradient(135deg, #fff6ef 0%, #ffe6d4 100%);
+            border-left: 6px solid #ff6600;
+            font-size: 20px;
+            line-height: 1.7;
+            font-style: italic;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(255,102,0,0.1);
+        }
+
+        blockquote strong {
+            color: #003399;
+            font-style: normal;
+        }
+
+        strong {
+            color: #003399;
+            font-weight: 700;
+        }
+
+        /* FOOTER */
+        .cd-footer {
+            background: linear-gradient(135deg, #003399 0%, #0053b3 100%);
+            color: white;
+            text-align: center;
+            padding: 25px;
+            margin-top: 60px;
+            font-size: 15px;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+            .kpi-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .cd-header {
+                flex-direction: column;
+                gap: 30px;
+                padding: 30px 30px;
+            }
+
+            .cd-logo {
+                height: 120px;
+            }
+
+            .cd-title h1 {
+                font-size: 32px;
+                text-align: center;
+            }
+
+            .cd-title span {
+                text-align: center;
+            }
+
+            .card {
+                padding: 25px 30px;
+            }
+
+            .kpi-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="cd-header">
+<div class="cd-logo-wrapper">
+    <svg
+        class="cd-logo"
+        viewBox="-200 0 4500 939.16796"
+        xmlns="http://www.w3.org/2000/svg"
+        role="img"
+        aria-label="Cdiscount.fr"
+        preserveAspectRatio="xMidYMid meet"
+        style="overflow: visible;">
+        <g style="fill:#ffffff;fill-opacity:1" transform="matrix(5.7799218,0,0,5.7799218,-152.95454,-34.679531)">
+            <path d="m 164.139,67.0183 c -5.151,23.0793 -11.719,43.2157 -17.552,58.7387 -1.8,-15.245 -3.414,-30.3424 -5.039,-45.5332 -1.698,-15.8854 -3.408,-31.8727 -5.352,-48.2372 l -19.903,2.4587 c 0.321,3.2531 0.675,6.5043 1.028,9.7558 0.917,8.4285 1.834,16.8588 2.185,25.3297 C 82.0691,90.8155 69.1297,116.73 69.2732,133.977 40.9999,145 13.9999,129.5 21.4456,99.6272 28.8458,75.2305 58.8587,68.5045 80.6155,75.9736 L 87.148,57.0041 C 54.6424,45.8091 13.4998,58 2.27867,93.7766 -10.5002,141 34.4998,170 76.9364,152.57 94.9998,166.5 118.5,153.5 127.635,136.166 c 2.028,17.032 3.428,28.589 3.482,28.876 l 18.826,3.446 c 0.538,-1.023 8.884,-17.013 18.126,-42.982 1.077,14.591 2.028,27.315 2.315,31.048 l 19.993,-1.526 c -0.772,-10.157 -6.443,-86.6278 -6.443,-86.6278 z M 90.0912,137.494 C 84.9998,120 111.272,98.8231 119.506,93.1664 120,108.5 109.5,142.5 90.0912,137.494 Z m 74.3068,-105.0092 -0.333,20.8878 20.045,0.3187 0.332,-20.8877 z M 401.68,137.979 C 411.5,135 407.5,78 402.416,60.7188 l 19.418,-5.0609 C 427.95,79.452 439,157.989 401.5,157.989 c -30.182,-0.311 -31.515,-45.177 -31.388,-66.2585 -2.549,1.3998 -5.187,2.5305 -7.897,3.3739 0.468,22.2206 -5.215,63.0646 -33.309,63.1536 -10.406,-0.269 -15.137,-4.765 -18.897,-12.652 -6.012,6.407 -14.555,12.563 -25.754,12.563 -16.925,0 -30.45,-12.775 -35.965,-28.123 -9.17,17.48 -46.84,26.633 -48.455,27.01 l -4.648,-19.508 c 16.726,-3.966 30.616,-11.396 34.475,-15.578 -3.921,-4.02 -9.281,-7.317 -14.717,-10.659 -11.422,-7.024 -23.176,-14.2529 -22.612,-28.8409 1.22,-17.139 21.679,-27.3686 43.628,-35.8753 l 7.251,18.7004 c -28.195,10.9115 -30.761,16.9774 -30.869,18.5747 4.288,4.2741 10.506,8.485 16.516,12.5553 6.126,4.1478 12.036,8.1498 15.465,11.9238 -0.976,-22.33 6.304,-58.0165 34.547,-58.9904 14.394,-0.5025 25.323,9.9604 26.525,11.1628 L 291.308,74.8069 C 289.675,73.2276 284.417,69.2255 279.464,69.405 260,71.5 257.5,133 280.774,137.656 c 9.871,2.64 16.08,-6.808 21.072,-14.403 0.805,-1.225 1.578,-2.402 2.33,-3.472 C 302.5,98 306,52.5 332.514,52.3378 c 11.216,0 25.935,10.2308 27.996,21.8409 5.431,-3.0546 9.248,-8.2158 12.437,-13.4419 l 18.539,6.2095 C 389.5,78 388.5,138.5 401.68,137.979 Z M 328.314,79.7063 C 322.432,95.3013 321.5,122 328.709,138.23 339.5,137.656 342.479,104.675 342.115,94.3327 336.404,91.1562 331.542,85.355 328.314,79.7063 Z m 159.15,33.6317 -32.77,-62.5973 -18.916,4.7918 1.472,100.8775 20.064,-0.287 -0.861,-58.793 32.16,61.431 18.916,-4.648 V 65.2416 h -20.065 z m 1.992,-79.9156 76.399,1.8126 -0.467,20.0463 -25.843,-0.6102 c 0.385,15.0525 0.867,30.1023 1.349,45.1521 0.608,18.9978 1.217,37.9968 1.63,56.9998 l -20.046,0.449 c -0.419,-18.317 -1.004,-36.629 -1.589,-54.94 -0.513,-16.0477 -1.025,-32.0949 -1.426,-48.1455 l -30.491,-0.7178 z"/>
+            <path d="m 663.018,26.477 -109.223,46.033 7.071,16.7979 3.284,-1.3818 -0.323,33.5959 23.689,-1.92 -5.186,34.906 14.985,8.219 46.249,-40.11 -6.138,-7.089 50.627,-4.128 C 680.084,82.9797 671.61,54.715 663.018,26.477 Z m -59.062,106.351 2.189,-14.752 16.367,-1.328 z M 582.24,101.745 582.456,80.209 651.46,51.1356 c 3.302,10.9474 8.758,29.1811 13.029,43.9152 z"/>
+            <path d="m 703.02,6 c -0.179,0.14357 -17.803,15.0572 -25.053,20.6565 l 11.145,14.4111 c 7.555,-5.8506 24.927,-20.5309 25.663,-21.159 z"/>
+            <path d="m 750.465,27.9915 -54.102,20.7691 6.535,17.023 L 757,45.0145 Z"/>
+            <path d="m 701.118,95.1228 c 9.907,-2.5125 20.136,-3.7149 30.33,-3.5354 l 0.323,-18.2158 c -11.827,-0.1795 -23.636,1.1665 -35.122,4.0918 z"/>
+        </g>
+    </svg>
+</div>
+
+    <div class="cd-title">
+        <h1>Dashboard Acquisition Client</h1>
+        <span>Analyse des Canaux & Lifetime Value</span>
+    </div>
+</header>
+
+<!-- CONTENU -->
+<main class="container">
+
+    <!-- KPIs -->
+    <div class="kpi-grid">
+        <div class="kpi-card">
+            <div class="kpi-value">65.5K</div>
+            <div class="kpi-label">Total Clients</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-value">306.13€</div>
+            <div class="kpi-label">LTV Moyenne</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-value">9</div>
+            <div class="kpi-label">Canaux d'Acquisition</div>
+        </div>
+        <div class="kpi-card">
+            <div class="kpi-value">7.2</div>
+            <div class="kpi-label">NPS Moyen</div>
+        </div>
+    </div>
+
+    <!-- GRAPHIQUE 1: PIE CHART -->
+    <section class="card">
+        <h2>📊 Nombre de clients par Canal d'acquisition</h2>
+        <div class="chart-container" style="height: 450px;">
+            <canvas id="pieChart"></canvas>
+        </div>
+    </section>
+
+    <!-- GRAPHIQUE 2: NPS CHART + ANALYSE -->
+    <section class="card">
+        <h2>📈 Volume vs Qualité : Les canaux payants ciblés surpassent les canaux de masse en satisfaction client</h2>
+        <div class="chart-container" style="height: 350px; margin-bottom: 30px;">
+            <canvas id="npsChart"></canvas>
+        </div>
+
+        <div class="insight-box paradox">
+            <h4>
+                ⚠️ Paradoxe Volume/Qualité 
+                <span class="badge badge-warning">Attention</span>
+            </h4>
+            <p>
+                Les canaux à plus fort volume (<strong>organic 34%</strong>, <strong>direct 25%</strong>) affichent une satisfaction légèrement inférieure (<strong>NPS ~7.1</strong>) vs les canaux payants (<strong>NPS ~7.2-7.4</strong>). 
+                <br><br>
+                <em>→ Les clients acquis en masse sont moins satisfaits que ceux issus de campagnes ciblées.</em>
+            </p>
+        </div>
+
+        <div class="insight-box email">
+            <h4>
+                📧 Email = Champion de la Satisfaction
+                <span class="badge badge-info">Opportunité</span>
+            </h4>
+            <p>
+                Avec un <strong>NPS de 7.4</strong> (le plus élevé), l'email délivre la meilleure expérience client malgré seulement <strong>5% du volume</strong>. 
+                <br><br>
+                <em>→ Opportunité majeure : ce canal sous-exploité combine haute satisfaction + forte LTV (<strong>337€</strong>) → potentiel de scale important.</em>
+            </p>
+        </div>
+
+        <div class="insight-box paid">
+            <h4>
+                💳 Canaux Payants = Équilibre Optimal
+                <span class="badge badge-success">Recommandé</span>
+            </h4>
+            <p>
+                <strong>Paid Search (7.3 NPS)</strong> et <strong>Paid Social (7.2 NPS)</strong> offrent le meilleur compromis : satisfaction au-dessus de la moyenne + LTV élevée (<strong>340€+</strong>) malgré seulement <strong>18% du volume total</strong>.
+                <br><br>
+                <em>→ Justifie une augmentation d'investissement sur ces canaux.</em>
+            </p>
+        </div>
+    </section>
+
+    <!-- TABLEAU LTV -->
+    <section class="card">
+        <h2>💰 LTV par Catégorie : Les canaux payants génèrent des clients 27% plus rentables</h2>
+        
+        <table class="ltv-table">
+            <thead>
+                <tr>
+                    <th colspan="4">Catégorie de canal</th>
+                    <th rowspan="2">Grand Total</th>
+                </tr>
+                <tr>
+                    <th>autre_canaux</th>
+                    <th>autres_canaux</th>
+                    <th>canaux_payant</th>
+                    <th>organique</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>336.54</strong></td>
+                    <td>294.77</td>
+                    <td style="color: #4caf50; font-weight: 700;">341.29</td>
+                    <td style="color: #e57373;">268.42</td>
+                    <td><strong>306.13</strong></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="insight-box paid" style="margin-top: 30px;">
+            <h4>
+                🏆 Canaux Payants = LTV Champion
+                <span class="badge badge-success">+27% vs Organique</span>
+            </h4>
+            <p>
+                Les canaux payants affichent la <strong>LTV la plus élevée à 341€</strong> (+27% vs organique, +11% vs moyenne globale). 
+                <br><br>
+                <em>→ Chaque euro investi en acquisition payante génère un client de plus grande valeur.</em>
+            </p>
+        </div>
+
+        <div class="insight-box paradox">
+            <h4>
+                📉 Écart Organique Significatif
+                <span class="badge badge-warning">-21% vs Moyenne</span>
+            </h4>
+            <p>
+                Les canaux organiques (<strong>268€</strong>) sont <strong>21% sous la moyenne</strong> (306€) et <strong>27% sous les canaux payants</strong> (341€). 
+                <br><br>
+                <em>→ Ce gap de -73€/client représente un manque à gagner important étant donné que l'organique pèse 70% du volume.</em>
+            </p>
+        </div>
+
+        <div class="insight-box email">
+            <h4>
+                ⚖️ Autres Canaux = Position Intermédiaire Intéressante
+                <span class="badge badge-info">Meilleur ratio LTV/CAC</span>
+            </h4>
+            <p>
+                À <strong>309€</strong>, cette catégorie (email, affiliate, partner) se positionne entre organique et payant, légèrement au-dessus de la moyenne (+1%). 
+                <br><br>
+                <em>→ Étant donné leur faible CAC (surtout email), ils offrent le meilleur ratio LTV/CAC → canaux à prioriser pour la croissance rentable.</em>
+            </p>
+        </div>
+    </section>
+
+    <!-- RETOURS -->
+    <section class="card">
+        <h2>📦 Volume de Retours : Reflet de la Répartition du Volume Client</h2>
+        
+        <div class="chart-container" style="height: 300px; margin-bottom: 30px;">
+            <canvas id="returnsChart"></canvas>
+        </div>
+
+        <div class="insight-box paradox">
+            <h4>
+                📊 Organique = Volume Dominant
+                <span class="badge badge-warning">69% des retours</span>
+            </h4>
+            <p>
+                L'organique domine avec <strong>1,420 retours (69%)</strong> mais cela reflète simplement son poids dans la base client (70%). 
+                <br><br>
+                <em>→ Son taux de retour reste normal à ~9.3%, dans la moyenne du marché e-commerce.</em>
+            </p>
+        </div>
+
+        <div class="insight-box paid">
+            <h4>
+                💳 Canaux Payants = Qualité Maintenue
+                <span class="badge badge-success">+27% LTV sans dégradation</span>
+            </h4>
+            <p>
+                Les canaux payants génèrent <strong>390 retours (19%)</strong> pour 18% des clients, soit un taux équivalent à ~9.5%. 
+                <br><br>
+                <em>→ Point important : ces clients ont une valeur 27% supérieure (341€ vs 268€) sans dégrader la qualité → investissement justifié.</em>
+            </p>
+        </div>
+
+        <div class="insight-box email">
+            <h4>
+                📧 Autres Canaux = Point d'Attention
+                <span class="badge badge-info">Taux légèrement supérieur</span>
+            </h4>
+            <p>
+                Les autres canaux (email, affiliate, partner) totalisent <strong>230 retours</strong> pour seulement 12% du volume, suggérant un taux légèrement plus élevé (~10%). 
+                <br><br>
+                <em>→ L'email en particulier mérite une attention pour optimiser le ciblage.</em>
+            </p>
+        </div>
+
+        <div class="insight-box" style="background: linear-gradient(to right, #f5f5f5 0%, #ffffff 100%); border-color: #666;">
+            <h4 style="color: #333;">
+                🔄 Vision d'Ensemble
+                <span class="badge" style="background: #e8e8e8; color: #666;">Taux homogène 9-10%</span>
+            </h4>
+            <p>
+                Taux homogène entre <strong>9-10%</strong>, ce qui est dans la norme pour l'e-commerce. 
+                <br><br>
+                <em>→ Le volume de retours suit proportionnellement le volume de clients par canal.</em>
+            </p>
+        </div>
+    </section>
+
+    <!-- RECOMMANDATIONS -->
+    <section class="card">
+        <h2>🎯 Recommandations Stratégiques</h2>
+        <ul>
+            <li><strong>Scaler le canal Email</strong> : ROI potentiellement élevé avec la meilleure satisfaction et LTV</li>
+            <li><strong>Augmenter les budgets Paid Search & Paid Social</strong> : équilibre optimal volume/qualité</li>
+            <li><strong>Optimiser l'expérience des canaux organiques</strong> : améliorer le NPS pour les 59% du volume</li>
+            <li><strong>Analyser les causes de satisfaction</strong> : comprendre pourquoi les campagnes ciblées performent mieux</li>
+        </ul>
+    </section>
+
+</main>
+
+<footer class="cd-footer">
+    © Cdiscount – Dashboard Analyse Client
+</footer>
+
+<script>
+    // Données du Pie Chart
+    const pieData = {
+        labels: ['Organic', 'Direct', 'Referral', 'Paid Search', 'Paid Social', 'Email', 'Partner', 'Display', 'Affiliate'],
+        datasets: [{
+            data: [22310, 16340, 7421, 5903, 4377, 3245, 2497, 1610, 1298],
+            backgroundColor: [
+                '#4caf50',
+                '#90caf9',
+                '#5c6bc0',
+                '#c5e1a5',
+                '#e91e63',
+                '#ffe082',
+                '#f8bbd9',
+                '#ffb74d',
+                '#42a5f5'
+            ],
+            borderWidth: 2,
+            borderColor: '#ffffff'
+        }]
+    };
+
+    // Configuration Pie Chart
+    const pieConfig = {
+        type: 'pie',
+        data: pieData,
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            layout: {
+                padding: {
+                    top: 40,
+                    bottom: 40,
+                    left: 60,
+                    right: 20
+                }
+            },
+            plugins: {
+                legend: {
+                    position: 'right',
+                    labels: {
+                        padding: 15,
+                        usePointStyle: true,
+                        font: {
+                            size: 12
+                        }
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const label = context.label || '';
+                            const value = context.raw;
+                            const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                            const percentage = ((value / total) * 100).toFixed(1);
+                            return `${label}: ${value.toLocaleString()} (${percentage}%)`;
+                        }
+                    }
+                },
+                datalabels: {
+                    color: '#333',
+                    font: {
+                        weight: 'bold',
+                        size: 11
+                    },
+                    formatter: function(value, context) {
+                        const label = context.chart.data.labels[context.dataIndex];
+                        // Format value: 22310 -> 22.31k
+                        let formattedValue;
+                        if (value >= 1000) {
+                            formattedValue = (value / 1000).toFixed(2) + 'k';
+                        } else {
+                            formattedValue = value.toString();
+                        }
+                        return label + ' - ' + formattedValue;
+                    },
+                    anchor: 'end',
+                    align: 'end',
+                    offset: 10,
+                    clip: false,
+                    display: function(context) {
+                        const value = context.dataset.data[context.dataIndex];
+                        const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                        const percentage = (value / total) * 100;
+                        // Only show label if slice is big enough (> 2%)
+                        return percentage > 2;
+                    }
+                }
+            }
+        },
+        plugins: [ChartDataLabels]
+    };
+
+    // Données du NPS Chart (Satisfaction client par canal)
+    const npsData = {
+        labels: ['Affiliate', 'Direct', 'Display', 'Email', 'Organic', 'Paid Search', 'Paid Social', 'Partner', 'Referral'],
+        datasets: [{
+            label: 'NPS Moyen',
+            data: [7.29, 7.15, 7.22, 7.41, 7.13, 7.27, 7.22, 7.09, 7.12],
+            backgroundColor: [
+                '#90caf9',  // affiliate - light blue
+                '#c8e6c9',  // direct - light green
+                '#ffe0b2',  // display - light orange
+                '#1976d2',  // email - dark blue (champion)
+                '#e57373',  // organic - coral/red
+                '#ffb74d',  // paid_search - orange
+                '#4caf50',  // paid_social - green
+                '#b39ddb',  // partner - purple
+                '#f8bbd9'   // referral - pink
+            ],
+            borderColor: [
+                '#64b5f6',
+                '#a5d6a7',
+                '#ffcc80',
+                '#1565c0',
+                '#ef5350',
+                '#ffa726',
+                '#43a047',
+                '#9575cd',
+                '#f48fb1'
+            ],
+            borderWidth: 2,
+            borderRadius: 6
+        }]
+    };
+
+    // Configuration NPS Chart
+    const npsConfig = {
+        type: 'bar',
+        data: npsData,
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return `NPS: ${context.raw.toFixed(2)}`;
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    min: 7.0,
+                    max: 7.5,
+                    title: {
+                        display: true,
+                        text: 'nps_avg (AVG)',
+                        font: {
+                            size: 12,
+                            weight: '600'
+                        },
+                        color: '#666'
+                    },
+                    ticks: {
+                        stepSize: 0.1,
+                        callback: function(value) {
+                            return value.toFixed(1);
+                        }
+                    },
+                    grid: {
+                        color: 'rgba(0,0,0,0.08)'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'acquisition_channel',
+                        font: {
+                            size: 12,
+                            weight: '600'
+                        },
+                        color: '#666'
+                    },
+                    grid: {
+                        display: false
+                    },
+                    ticks: {
+                        font: {
+                            size: 11
+                        }
+                    }
+                }
+            }
+        }
+    };
+
+    // Données du Returns Chart (Nombre de retours par canal)
+    const returnsData = {
+        labels: ['Organique', 'Canaux Payants', 'Autres Canaux'],
+        datasets: [{
+            label: 'Nombre de retours',
+            data: [1420, 390, 230],
+            backgroundColor: [
+                'rgba(66, 133, 244, 0.85)',
+                'rgba(66, 133, 244, 0.85)',
+                'rgba(66, 133, 244, 0.85)'
+            ],
+            borderColor: [
+                '#4285f4',
+                '#4285f4',
+                '#4285f4'
+            ],
+            borderWidth: 1,
+            borderRadius: 4
+        }]
+    };
+
+    // Configuration Returns Chart
+    const returnsConfig = {
+        type: 'bar',
+        data: returnsData,
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top',
+                    align: 'end',
+                    labels: {
+                        boxWidth: 12,
+                        font: {
+                            size: 11
+                        }
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                            const percentage = ((context.raw / total) * 100).toFixed(0);
+                            return `Retours: ${context.raw.toLocaleString()} (${percentage}%)`;
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 1600,
+                    title: {
+                        display: true,
+                        text: 'return_flag_sum (AVG)',
+                        font: {
+                            size: 12,
+                            weight: '600'
+                        },
+                        color: '#666'
+                    },
+                    ticks: {
+                        stepSize: 200,
+                        callback: function(value) {
+                            return value.toLocaleString();
+                        }
+                    },
+                    grid: {
+                        color: 'rgba(0,0,0,0.08)'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'catégorie de canal',
+                        font: {
+                            size: 12,
+                            weight: '600'
+                        },
+                        color: '#666'
+                    },
+                    grid: {
+                        display: false
+                    }
+                }
+            }
+        }
+    };
+
+    // Initialisation des graphiques
+    new Chart(document.getElementById('pieChart'), pieConfig);
+    new Chart(document.getElementById('npsChart'), npsConfig);
+    new Chart(document.getElementById('returnsChart'), returnsConfig);
+</script>
+
+</body>
+</html>
