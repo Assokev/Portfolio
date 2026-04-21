@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marathon de Paris — Chiffres 2021-2025</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --panel: #ffffff;
+      --text: #0f172a;
+      --muted: #475569;
+      --line: #e2e8f0;
+      --blue: #2563eb;
+      --blue-soft: #dbeafe;
+      --green: #0f766e;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: radial-gradient(circle at top left, #eff6ff 0%, var(--bg) 45%);
+      color: var(--text);
+    }
+    .page {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 48px 24px 72px;
+    }
+    .hero {
+      display: grid;
+      grid-template-columns: 1.3fr 0.9fr;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 28px;
+      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.06);
+    }
+    .eyebrow {
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--blue);
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    h1, h2, h3 { margin: 0 0 12px; }
+    h1 { font-size: clamp(2rem, 4vw, 3.4rem); line-height: 1.05; }
+    p { margin: 0; color: var(--muted); line-height: 1.7; }
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 22px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 18px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 700;
+      border: 1px solid transparent;
+    }
+    .btn.primary { background: var(--text); color: #fff; }
+    .btn.secondary { background: #fff; color: var(--text); border-color: var(--line); }
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .kpi {
+      background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 18px;
+    }
+    .kpi strong {
+      display: block;
+      font-size: 1.7rem;
+      margin-bottom: 6px;
+    }
+    .kpi span {
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.5;
+    }
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 24px;
+    }
+    .chart-wrap {
+      margin-top: 18px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 16px;
+      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+    }
+    .chart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .chart-header span {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    svg { width: 100%; height: auto; display: block; }
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 14px;
+    }
+    .table th,
+    .table td {
+      padding: 12px 10px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      font-size: 0.95rem;
+    }
+    .table th { color: var(--muted); font-weight: 700; }
+    .callout {
+      margin-top: 18px;
+      padding: 18px;
+      border-radius: 18px;
+      background: var(--blue-soft);
+      border: 1px solid #bfdbfe;
+    }
+    .callout strong { color: var(--text); }
+    ul {
+      margin: 16px 0 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+    @media (max-width: 900px) {
+      .hero, .main-grid { grid-template-columns: 1fr; }
+      .kpi-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <section class="hero">
+      <div class="panel">
+        <div class="eyebrow">Analyse Marathon</div>
+        <h1>Marathon de Paris 2021-2025</h1>
+        <p>
+          Cette synthèse a été recalculée à partir du fichier
+          <strong>marathon_all_years2.xlsx</strong> ajouté au projet. L’objectif
+          est de rendre visibles les chiffres qui comptent vraiment sur le
+          portfolio : volumétrie, temps moyen et tendance sur 5 ans.
+        </p>
+        <div class="hero-actions">
+          <a class="btn primary" href="marathon-paris-analyse.pdf" target="_blank">Voir l'analyse PDF</a>
+          <a class="btn secondary" href="https://github.com/Assokev/Portfolio/tree/main/DataanalysePython" target="_blank">Voir GitHub</a>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="eyebrow">Lecture rapide</div>
+        <div class="kpi-grid">
+          <div class="kpi">
+            <strong>217 968</strong>
+            <span>athlètes analysés sur l’ensemble des 5 éditions</span>
+          </div>
+          <div class="kpi">
+            <strong>5 h 34</strong>
+            <span>temps officiel moyen global sur 2021-2025</span>
+          </div>
+          <div class="kpi">
+            <strong>+55 min</strong>
+            <span>entre la moyenne 2021 et la moyenne 2025</span>
+          </div>
+        </div>
+        <div class="callout">
+          <strong>Insight principal :</strong> le peloton passe de
+          <strong>27 114</strong> coureurs en 2021 à <strong>54 929</strong> en
+          2025, pendant que le temps officiel moyen monte de
+          <strong>5 h 13</strong> à <strong>6 h 08</strong>. Le dataset raconte
+          donc à la fois une forte reprise de participation et une distribution
+          de performances plus large.
+        </div>
+      </div>
+    </section>
+
+    <section class="main-grid">
+      <div class="panel">
+        <div class="eyebrow">Évolution des performances</div>
+        <h2>Tendance du temps officiel moyen</h2>
+        <p>Visualisation des moyennes annuelles calculées à partir du classeur consolidé.</p>
+        <div class="chart-wrap">
+          <div class="chart-header">
+            <strong>Temps moyen par édition</strong>
+            <span>axe vertical en minutes</span>
+          </div>
+          <svg viewBox="0 0 760 360" role="img" aria-label="Graphique d'évolution du temps officiel moyen de 2021 à 2025">
+            <defs>
+              <linearGradient id="fillArea" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#60a5fa" stop-opacity="0.30"></stop>
+                <stop offset="100%" stop-color="#60a5fa" stop-opacity="0.02"></stop>
+              </linearGradient>
+            </defs>
+            <g stroke="#cbd5e1" stroke-width="1">
+              <line x1="70" y1="60" x2="70" y2="290"></line>
+              <line x1="70" y1="290" x2="710" y2="290"></line>
+              <line x1="70" y1="240" x2="710" y2="240" stroke-dasharray="5 5"></line>
+              <line x1="70" y1="190" x2="710" y2="190" stroke-dasharray="5 5"></line>
+              <line x1="70" y1="140" x2="710" y2="140" stroke-dasharray="5 5"></line>
+              <line x1="70" y1="90" x2="710" y2="90" stroke-dasharray="5 5"></line>
+            </g>
+            <g fill="#64748b" font-size="13">
+              <text x="28" y="294">300</text>
+              <text x="28" y="244">320</text>
+              <text x="28" y="194">340</text>
+              <text x="28" y="144">360</text>
+              <text x="28" y="94">380</text>
+            </g>
+            <path d="M 120 257 L 260 231 L 400 223 L 540 223 L 680 121 L 680 290 L 120 290 Z" fill="url(#fillArea)"></path>
+            <polyline
+              fill="none"
+              stroke="#2563eb"
+              stroke-width="4"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              points="120,257 260,231 400,223 540,223 680,121"
+            ></polyline>
+            <g fill="#2563eb" stroke="#ffffff" stroke-width="4">
+              <circle cx="120" cy="257" r="7"></circle>
+              <circle cx="260" cy="231" r="7"></circle>
+              <circle cx="400" cy="223" r="7"></circle>
+              <circle cx="540" cy="223" r="7"></circle>
+              <circle cx="680" cy="121" r="7"></circle>
+            </g>
+            <g fill="#0f172a" font-size="14" font-weight="700">
+              <text x="96" y="315">2021</text>
+              <text x="236" y="315">2022</text>
+              <text x="376" y="315">2023</text>
+              <text x="516" y="315">2024</text>
+              <text x="656" y="315">2025</text>
+            </g>
+            <g fill="#1e3a8a" font-size="13" font-weight="700">
+              <text x="90" y="244">5 h 13</text>
+              <text x="230" y="218">5 h 23</text>
+              <text x="370" y="210">5 h 27</text>
+              <text x="510" y="210">5 h 27</text>
+              <text x="650" y="108">6 h 08</text>
+            </g>
+          </svg>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="eyebrow">Détail annuel</div>
+        <h2>Volumétrie et moyenne officielle</h2>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Année</th>
+              <th>Athlètes</th>
+              <th>Temps moyen</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>2021</td><td>27 114</td><td>5 h 13 min</td></tr>
+            <tr><td>2022</td><td>34 365</td><td>5 h 23 min</td></tr>
+            <tr><td>2023</td><td>50 780</td><td>5 h 27 min</td></tr>
+            <tr><td>2024</td><td>50 780</td><td>5 h 27 min</td></tr>
+            <tr><td>2025</td><td>54 929</td><td>6 h 08 min</td></tr>
+          </tbody>
+        </table>
+        <div class="callout">
+          <strong>À retenir :</strong> la hausse de participation est continue,
+          mais l’édition 2025 ressort clairement comme la plus lente de la
+          série au niveau du temps officiel moyen.
+        </div>
+        <ul>
+          <li>Source utilisée : <code>marathon_all_years2.xlsx</code>.</li>
+          <li>Métrique utilisée : <code>Temps Officiel</code> converti en durée.</li>
+          <li>Périmètre : 5 éditions, 217 968 temps officiels exploitables.</li>
+        </ul>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

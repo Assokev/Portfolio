@@ -173,12 +173,22 @@
     .hero-deco-1 {
       position: absolute; bottom: -24px; right: -24px;
       width: 128px; height: 128px; background: var(--blue-600);
-      border-radius: 24px; transform: rotate(12deg); z-index: 0;
+      border-radius: 24px; z-index: 0;
+      animation: deco-spin 18s linear infinite;
     }
     .hero-deco-2 {
       position: absolute; top: -24px; left: -24px;
       width: 96px; height: 96px; background: var(--slate-200);
       border-radius: 50%; z-index: 0;
+      animation: deco-pulse 4s ease-in-out infinite;
+    }
+    @keyframes deco-spin {
+      from { transform: rotate(12deg); }
+      to   { transform: rotate(372deg); }
+    }
+    @keyframes deco-pulse {
+      0%, 100% { transform: scale(1); }
+      50%       { transform: scale(1.18); }
     }
     .scroll-chevron {
       position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
@@ -236,6 +246,55 @@
       margin-bottom: 20px;
       display: -webkit-box; -webkit-line-clamp: 3; line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
     }
+    .project-proof-label {
+      font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em;
+      color: var(--slate-500); margin-bottom: 10px;
+    }
+    .project-proof-grid {
+      display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px; margin-bottom: 16px;
+    }
+    .project-proof-item {
+      padding: 12px; border: 1px solid var(--slate-200); border-radius: 14px;
+      background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    }
+    .project-proof-value {
+      display: block; font-size: 1rem; font-weight: 800; color: var(--slate-900); margin-bottom: 4px;
+    }
+    .project-proof-text {
+      display: block; font-size: 0.76rem; line-height: 1.45; color: var(--slate-600);
+    }
+    .project-insight {
+      padding: 14px 16px; border-radius: 16px; background: #eff6ff;
+      border: 1px solid #bfdbfe; margin-bottom: 16px;
+    }
+    .project-insight p {
+      margin: 0; display: block; -webkit-line-clamp: unset; line-clamp: unset;
+      overflow: visible; color: var(--slate-700);
+    }
+    .project-note {
+      display: inline-flex; align-items: center; gap: 8px;
+      width: fit-content; padding: 7px 12px; border-radius: 999px;
+      border: 1px solid #c7d2fe; background: #eef2ff; color: #4338ca;
+      font-size: 0.74rem; font-weight: 700; margin-bottom: 16px;
+    }
+    .project-actions {
+      display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 18px;
+    }
+    .project-link {
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: 8px; min-height: 42px; padding: 10px 14px; border-radius: 999px;
+      text-decoration: none; font-size: 0.8rem; font-weight: 700;
+      border: 1px solid transparent; transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+    }
+    .project-link svg { width: 16px; height: 16px; }
+    .project-link.primary {
+      background: var(--slate-900); color: var(--white); box-shadow: 0 10px 25px rgba(15,23,42,0.12);
+    }
+    .project-link.secondary {
+      background: var(--white); color: var(--slate-700); border-color: var(--slate-200);
+    }
+    .project-link:hover { transform: translateY(-1px); }
     .project-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; }
     .ptag {
       font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;
@@ -346,6 +405,7 @@
       .hero-photo-wrap { order: -1; }
       .hero-title { font-size: 3.5rem; }
       .projects-grid { grid-template-columns: 1fr; }
+      .project-proof-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .about-grid { grid-template-columns: 1fr; gap: 40px; }
       .skills-grid { grid-template-columns: 1fr 1fr; }
       .exp-item { grid-template-columns: 1fr; gap: 8px; }
@@ -353,6 +413,7 @@
       .edu-grid { grid-template-columns: 1fr; }
     }
     @media (max-width: 480px) {
+      .project-proof-grid { grid-template-columns: 1fr; }
       .skills-grid { grid-template-columns: 1fr; }
       .stats-grid { grid-template-columns: 1fr 1fr; }
       .hero-btns { flex-direction: column; }
@@ -422,12 +483,12 @@
       <h2 class="sh-title reveal" data-i18n-html="projects-title">Mes <span>projets</span></h2>
       <div class="projects-grid">
 
-        <div class="project-card reveal" onclick="window.open('DataanalysePython/marathon-paris-analyse.pdf','_blank')">
+        <div class="project-card reveal" onclick="window.open('DataanalysePython/marathon-metrics.html','_blank')">
           <div class="project-img-wrap">
             <img src="https://i.postimg.cc/xTRq5ScF/Gemini-Generated-Image-80f13j80f13j80f1.png" alt="Marathon" referrerpolicy="no-referrer" />
             <div class="project-overlay">
               <div class="project-overlay-btns">
-                <a href="DataanalysePython/marathon-paris-analyse.pdf" target="_blank" onclick="event.stopPropagation()" class="overlay-btn">
+                <a href="DataanalysePython/marathon-metrics.html" target="_blank" onclick="event.stopPropagation()" class="overlay-btn">
                   <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
                 </a>
                 <a href="https://github.com/Assokev/Portfolio/tree/main/DataanalysePython" target="_blank" onclick="event.stopPropagation()" class="overlay-btn">
@@ -439,18 +500,50 @@
           </div>
           <div class="project-body">
             <h3 data-i18n="marathon-title">Analyse — Marathon de Paris</h3>
-            <p data-i18n="marathon-desc">Web scraping automatisé des résultats du Marathon de Paris (2021–2025) depuis timeto.com. Collecte de +200 000 lignes de données, fusion multi-années et analyse des performances par catégorie, nationalité et genre.</p>
+            <p data-i18n="marathon-desc">Analyse consolidée des résultats du Marathon de Paris sur 5 éditions. À partir du classeur 2021–2025, j’ai reconstruit la volumétrie annuelle, les temps officiels moyens et l’évolution des performances pour produire une lecture claire des tendances.</p>
+            <div class="project-proof-label" data-i18n="project-proof-label">Chiffres clés</div>
+            <div class="project-proof-grid">
+              <div class="project-proof-item">
+                <span class="project-proof-value">217 968</span>
+                <span class="project-proof-text" data-i18n="marathon-proof-1">athlètes analysés sur 5 éditions</span>
+              </div>
+              <div class="project-proof-item">
+                <span class="project-proof-value">5 h 34</span>
+                <span class="project-proof-text" data-i18n="marathon-proof-2">temps officiel moyen global</span>
+              </div>
+              <div class="project-proof-item">
+                <span class="project-proof-value">+55 min</span>
+                <span class="project-proof-text" data-i18n="marathon-proof-3">entre 2021 et 2025 sur la moyenne officielle</span>
+              </div>
+            </div>
+            <div class="project-insight">
+              <div class="project-proof-label" data-i18n="project-insight-label">Insight</div>
+              <p data-i18n="marathon-insight">Le volume passe de 27 114 coureurs en 2021 à 54 929 en 2025, tandis que le temps officiel moyen progresse de 5 h 13 à 6 h 08, signe d’un peloton plus large et plus hétérogène.</p>
+            </div>
+            <div class="project-actions">
+              <a href="DataanalysePython/marathon-metrics.html" target="_blank" onclick="event.stopPropagation()" class="project-link primary">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-6m3 6V7m3 10v-3M13 3H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V10l-7-7z"/></svg>
+                <span data-i18n="marathon-cta-report">Voir les chiffres 2021-2025</span>
+              </a>
+              <a href="https://github.com/Assokev/Portfolio/tree/main/DataanalysePython" target="_blank" onclick="event.stopPropagation()" class="project-link secondary">
+                <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.335-1.755-1.335-1.755-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12"/></svg>
+                <span data-i18n="project-cta-github">Voir GitHub</span>
+              </a>
+            </div>
             <div class="project-tags">
               <span class="ptag">Python</span><span class="ptag">Pandas</span><span class="ptag">Web Scraping</span><span class="ptag">Data Analysis</span>
             </div>
           </div>
         </div>
 
-        <div class="project-card reveal" onclick="window.open('https://github.com/Assokev/Portfolio/tree/main/RAGpython','_blank')">
+        <div class="project-card reveal" onclick="window.open('RAGpython/demo-overview.html','_blank')">
           <div class="project-img-wrap">
             <img src="https://picsum.photos/seed/ai-bot/800/500" alt="RAG" referrerpolicy="no-referrer" />
             <div class="project-overlay">
               <div class="project-overlay-btns">
+                <a href="RAGpython/demo-overview.html" target="_blank" onclick="event.stopPropagation()" class="overlay-btn">
+                  <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                </a>
                 <a href="https://github.com/Assokev/Portfolio/tree/main/RAGpython" target="_blank" onclick="event.stopPropagation()" class="overlay-btn">
                   <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.335-1.755-1.335-1.755-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12"/></svg>
                 </a>
@@ -460,7 +553,37 @@
           </div>
           <div class="project-body">
             <h3 data-i18n="rag-title">IA Fiscaliste — Chatbot RAG</h3>
-            <p data-i18n="rag-desc">Assistant IA expert en droit fiscal français, basé sur le Livre des Procédures Fiscales (LPF édition 2026). Utilise un pipeline RAG (Retrieval-Augmented Generation) pour répondre avec précision aux questions juridiques.</p>
+            <p data-i18n="rag-desc">Assistant fiscal basé sur le Livre des Procédures Fiscales 2026. Le flux démontre une vraie logique RAG : question métier, récupération des passages pertinents, réponse structurée et citation explicite de l’article mobilisé.</p>
+            <div class="project-proof-label" data-i18n="project-proof-label">Chiffres clés</div>
+            <div class="project-proof-grid">
+              <div class="project-proof-item">
+                <span class="project-proof-value">LPF 2026</span>
+                <span class="project-proof-text" data-i18n="rag-proof-1">base documentaire juridique indexée</span>
+              </div>
+              <div class="project-proof-item">
+                <span class="project-proof-value">Top 5</span>
+                <span class="project-proof-text" data-i18n="rag-proof-2">extraits récupérés avant génération</span>
+              </div>
+              <div class="project-proof-item">
+                <span class="project-proof-value">1 000</span>
+                <span class="project-proof-text" data-i18n="rag-proof-3">caractères par chunk avec overlap 150</span>
+              </div>
+            </div>
+            <div class="project-insight">
+              <div class="project-proof-label" data-i18n="project-insight-label">Insight</div>
+              <p data-i18n="rag-insight">Exemple de flux montré dans l’aperçu : “Quel est le délai de reprise pour l’IS ?” → réponse technique, article cité, et refus explicite si l’information n’est pas présente dans les sources.</p>
+            </div>
+            <div class="project-note" data-i18n="rag-video-note">Démo vidéo à ajouter : question réelle + réponse + source LPF</div>
+            <div class="project-actions">
+              <a href="RAGpython/demo-overview.html" target="_blank" onclick="event.stopPropagation()" class="project-link primary">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14m-6 4h5a2 2 0 002-2V8a2 2 0 00-2-2H9a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                <span data-i18n="rag-cta-demo">Voir l’aperçu RAG</span>
+              </a>
+              <a href="https://github.com/Assokev/Portfolio/tree/main/RAGpython" target="_blank" onclick="event.stopPropagation()" class="project-link secondary">
+                <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.335-1.755-1.335-1.755-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12"/></svg>
+                <span data-i18n="project-cta-github">Voir GitHub</span>
+              </a>
+            </div>
             <div class="project-tags">
               <span class="ptag">Python</span><span class="ptag">LangChain</span><span class="ptag">OpenAI</span><span class="ptag">FAISS</span><span class="ptag">Streamlit</span>
             </div>
@@ -484,7 +607,36 @@
           </div>
           <div class="project-body">
             <h3 data-i18n="tableau-title">Dashboard E-commerce — Brésil</h3>
-            <p data-i18n="tableau-desc">Analyse complète des données e-commerce du dataset Olist (marché brésilien). Visualisation des tendances de ventes, comportements d'achat et performances logistiques via un dashboard interactif Tableau.</p>
+            <p data-i18n="tableau-desc">Dashboard Tableau construit sur le dataset Olist pour relier performance commerciale et qualité opérationnelle. J’y mets en avant les volumes de ventes, la qualité de livraison et le délai moyen plutôt que des KPIs de trafic non soutenables avec les données disponibles.</p>
+            <div class="project-proof-label" data-i18n="project-proof-label">Chiffres clés</div>
+            <div class="project-proof-grid">
+              <div class="project-proof-item">
+                <span class="project-proof-value">16,0 M</span>
+                <span class="project-proof-text" data-i18n="tableau-proof-1">ventes totales analysées</span>
+              </div>
+              <div class="project-proof-item">
+                <span class="project-proof-value">97,0 %</span>
+                <span class="project-proof-text" data-i18n="tableau-proof-2">commandes livrées avec succès</span>
+              </div>
+              <div class="project-proof-item">
+                <span class="project-proof-value">12,6 j</span>
+                <span class="project-proof-text" data-i18n="tableau-proof-3">délai moyen de livraison</span>
+              </div>
+            </div>
+            <div class="project-insight">
+              <div class="project-proof-label" data-i18n="project-insight-label">Insight</div>
+              <p data-i18n="tableau-insight">Le projet rend la logistique visible comme un KPI business à part entière : le volume de ventes n’est pertinent que s’il reste compatible avec une livraison fiable et maîtrisée.</p>
+            </div>
+            <div class="project-actions">
+              <a href="https://public.tableau.com/app/profile/kevin.assombi/viz/Ecommerce_bresil_17738436997980/Performancese-commerce-Brsil" target="_blank" onclick="event.stopPropagation()" class="project-link primary">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                <span data-i18n="project-cta-project">Voir le projet</span>
+              </a>
+              <a href="https://github.com/Assokev/Portfolio/tree/main/Tableau" target="_blank" onclick="event.stopPropagation()" class="project-link secondary">
+                <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.335-1.755-1.335-1.755-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12"/></svg>
+                <span data-i18n="project-cta-github">Voir GitHub</span>
+              </a>
+            </div>
             <div class="project-tags">
               <span class="ptag">Tableau</span><span class="ptag">Data Viz</span><span class="ptag">E-commerce</span><span class="ptag">SQL</span>
             </div>
@@ -508,7 +660,36 @@
           </div>
           <div class="project-body">
             <h3 data-i18n="dataiku-title">Dashboard Client — Cdiscount</h3>
-            <p data-i18n="dataiku-desc">Dashboard analytique client pour Cdiscount développé avec Dataiku. Visualisation des segments clients, analyse de la valeur client (RFM) et suivi des KPIs de conversion, exporté en HTML interactif avec Chart.js.</p>
+            <p data-i18n="dataiku-desc">Dashboard client orienté acquisition et valeur, exporté en HTML interactif. J’y combine signaux de satisfaction, LTV par canal et lecture RFM pour prioriser les segments à activer, fidéliser ou surveiller côté acquisition.</p>
+            <div class="project-proof-label" data-i18n="project-proof-label">Chiffres clés</div>
+            <div class="project-proof-grid">
+              <div class="project-proof-item">
+                <span class="project-proof-value">341 €</span>
+                <span class="project-proof-text" data-i18n="dataiku-proof-1">LTV des canaux payants</span>
+              </div>
+              <div class="project-proof-item">
+                <span class="project-proof-value">7,4</span>
+                <span class="project-proof-text" data-i18n="dataiku-proof-2">NPS email, meilleur canal</span>
+              </div>
+              <div class="project-proof-item">
+                <span class="project-proof-value">69 %</span>
+                <span class="project-proof-text" data-i18n="dataiku-proof-3">des retours issus de l’organique</span>
+              </div>
+            </div>
+            <div class="project-insight">
+              <div class="project-proof-label" data-i18n="project-insight-label">Insight</div>
+              <p data-i18n="dataiku-insight">La segmentation RFM m’a servi à distinguer les segments à forte valeur à fidéliser des segments organiques à plus faible qualité, afin d’orienter les arbitrages acquisition, CRM et rétention.</p>
+            </div>
+            <div class="project-actions">
+              <a href="dataiku/dashboard.html" target="_blank" onclick="event.stopPropagation()" class="project-link primary">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                <span data-i18n="project-cta-project">Voir le projet</span>
+              </a>
+              <a href="https://github.com/Assokev/Portfolio/tree/main/dataiku" target="_blank" onclick="event.stopPropagation()" class="project-link secondary">
+                <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.335-1.755-1.335-1.755-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12"/></svg>
+                <span data-i18n="project-cta-github">Voir GitHub</span>
+              </a>
+            </div>
             <div class="project-tags">
               <span class="ptag">Dataiku</span><span class="ptag">Chart.js</span><span class="ptag">HTML/CSS</span><span class="ptag">Business Intelligence</span>
             </div>
@@ -681,14 +862,35 @@
       'sg-python':'Python libs','sg-tools':'Outils & CRM','sg-langs':'Langues',
       'lang-fr':'Français — Natif','lang-en':'Anglais — Bilingue',
       'projects-label':'Portfolio','projects-title':'Mes <span>projets</span>',
+      'project-proof-label':'Chiffres clés','project-insight-label':'Insight',
+      'project-cta-project':'Voir le projet','project-cta-github':'Voir GitHub',
       'marathon-title':'Analyse — Marathon de Paris',
-      'marathon-desc':'Web scraping automatisé des résultats du Marathon de Paris (2021–2025) depuis timeto.com. Collecte de +200 000 lignes de données, fusion multi-années et analyse des performances par catégorie, nationalité et genre.',
+      'marathon-desc':'Analyse consolidée des résultats du Marathon de Paris sur 5 éditions. À partir du classeur 2021–2025, j’ai reconstruit la volumétrie annuelle, les temps officiels moyens et l’évolution des performances pour produire une lecture claire des tendances.',
+      'marathon-proof-1':'athlètes analysés sur 5 éditions',
+      'marathon-proof-2':'temps officiel moyen global',
+      'marathon-proof-3':'entre 2021 et 2025 sur la moyenne officielle',
+      'marathon-insight':'Le volume passe de 27 114 coureurs en 2021 à 54 929 en 2025, tandis que le temps officiel moyen progresse de 5 h 13 à 6 h 08, signe d’un peloton plus large et plus hétérogène.',
+      'marathon-cta-report':'Voir les chiffres 2021-2025',
       'rag-title':'IA Fiscaliste — Chatbot RAG',
-      'rag-desc':'Assistant IA expert en droit fiscal français, basé sur le Livre des Procédures Fiscales (LPF édition 2026). Utilise un pipeline RAG (Retrieval-Augmented Generation) pour répondre avec précision aux questions juridiques.',
+      'rag-desc':'Assistant fiscal basé sur le Livre des Procédures Fiscales 2026. Le flux démontre une vraie logique RAG : question métier, récupération des passages pertinents, réponse structurée et citation explicite de l’article mobilisé.',
+      'rag-proof-1':'base documentaire juridique indexée',
+      'rag-proof-2':'extraits récupérés avant génération',
+      'rag-proof-3':'caractères par chunk avec overlap 150',
+      'rag-insight':'Exemple de flux montré dans l’aperçu : “Quel est le délai de reprise pour l’IS ?” → réponse technique, article cité, et refus explicite si l’information n’est pas présente dans les sources.',
+      'rag-video-note':'Démo vidéo à ajouter : question réelle + réponse + source LPF',
+      'rag-cta-demo':'Voir l’aperçu RAG',
       'tableau-title':'Dashboard E-commerce — Brésil',
-      'tableau-desc':'Analyse complète des données e-commerce du dataset Olist (marché brésilien). Visualisation des tendances de ventes, comportements d\'achat et performances logistiques via un dashboard interactif Tableau.',
+      'tableau-desc':'Dashboard Tableau construit sur le dataset Olist pour relier performance commerciale et qualité opérationnelle. J’y mets en avant les volumes de ventes, la qualité de livraison et le délai moyen plutôt que des KPIs de trafic non soutenables avec les données disponibles.',
+      'tableau-proof-1':'ventes totales analysées',
+      'tableau-proof-2':'commandes livrées avec succès',
+      'tableau-proof-3':'délai moyen de livraison',
+      'tableau-insight':'Le projet rend la logistique visible comme un KPI business à part entière : le volume de ventes n’est pertinent que s’il reste compatible avec une livraison fiable et maîtrisée.',
       'dataiku-title':'Dashboard Client — Cdiscount',
-      'dataiku-desc':'Dashboard analytique client pour Cdiscount développé avec Dataiku. Visualisation des segments clients, analyse de la valeur client (RFM) et suivi des KPIs de conversion, exporté en HTML interactif avec Chart.js.',
+      'dataiku-desc':'Dashboard client orienté acquisition et valeur, exporté en HTML interactif. J’y combine signaux de satisfaction, LTV par canal et lecture RFM pour prioriser les segments à activer, fidéliser ou surveiller côté acquisition.',
+      'dataiku-proof-1':'LTV des canaux payants',
+      'dataiku-proof-2':'NPS email, meilleur canal',
+      'dataiku-proof-3':'des retours issus de l’organique',
+      'dataiku-insight':'La segmentation RFM m’a servi à distinguer les segments à forte valeur à fidéliser des segments organiques à plus faible qualité, afin d’orienter les arbitrages acquisition, CRM et rétention.',
       'exp-label':'Parcours','exp-title':'Expériences <span>professionnelles</span>',
       'exp1-date':'En cours',
       'exp1-li1':'Déploiement d\'outils IA (Microsoft Copilot) et intégration dans les processus internes',
@@ -725,14 +927,35 @@
       'sg-python':'Python libs','sg-tools':'Tools & CRM','sg-langs':'Languages',
       'lang-fr':'French — Native','lang-en':'English — Bilingual',
       'projects-label':'Portfolio','projects-title':'My <span>projects</span>',
+      'project-proof-label':'Key figures','project-insight-label':'Insight',
+      'project-cta-project':'View project','project-cta-github':'View GitHub',
       'marathon-title':'Analysis — Paris Marathon',
-      'marathon-desc':'Automated web scraping of Paris Marathon results (2021–2025) from timeto.com. Collection of 200,000+ rows, multi-year merge and performance analysis by category, nationality and gender.',
+      'marathon-desc':'Consolidated analysis of Paris Marathon results across 5 editions. Using the 2021–2025 workbook, I rebuilt yearly volumes, average official times and performance evolution to produce a clear trend view.',
+      'marathon-proof-1':'athletes analysed across 5 editions',
+      'marathon-proof-2':'overall average official time',
+      'marathon-proof-3':'change in average official time from 2021 to 2025',
+      'marathon-insight':'Volume grows from 27,114 runners in 2021 to 54,929 in 2025, while the average official time moves from 5h13 to 6h08, pointing to a broader and more heterogeneous field.',
+      'marathon-cta-report':'View 2021-2025 figures',
       'rag-title':'Tax AI — RAG Chatbot',
-      'rag-desc':'AI assistant expert in French tax law, based on the Book of Tax Procedures (LPF 2026 edition). Uses a RAG (Retrieval-Augmented Generation) pipeline to accurately answer legal questions.',
+      'rag-desc':'Tax assistant built on the 2026 Book of Tax Procedures. The flow shows a real RAG setup: business question, relevant passage retrieval, structured answer and explicit citation of the article used.',
+      'rag-proof-1':'indexed legal knowledge base',
+      'rag-proof-2':'retrieved excerpts before generation',
+      'rag-proof-3':'characters per chunk with 150 overlap',
+      'rag-insight':'The preview shows a sample flow: “What is the limitation period for corporate income tax reassessment?” → technical answer, cited article, and explicit fallback when the source is missing.',
+      'rag-video-note':'Video demo to add: real question + answer + LPF source',
+      'rag-cta-demo':'View RAG preview',
       'tableau-title':'E-commerce Dashboard — Brazil',
-      'tableau-desc':'Full analysis of e-commerce data from the Olist dataset (Brazilian market). Visualization of sales trends, purchasing behavior and logistics performance via an interactive Tableau dashboard.',
+      'tableau-desc':'Tableau dashboard built on the Olist dataset to connect commercial performance with operational quality. It highlights sales volume, delivery quality and average lead time instead of unsupported traffic KPIs.',
+      'tableau-proof-1':'total sales analysed',
+      'tableau-proof-2':'orders successfully delivered',
+      'tableau-proof-3':'average delivery time',
+      'tableau-insight':'The project makes logistics visible as a business KPI: sales volume only matters when delivery remains reliable and controlled.',
       'dataiku-title':'Customer Dashboard — Cdiscount',
-      'dataiku-desc':'Customer analytics dashboard for Cdiscount built with Dataiku. Visualization of customer segments, RFM analysis and conversion KPI tracking, exported as an interactive HTML page with Chart.js.',
+      'dataiku-desc':'Customer value and acquisition dashboard exported as interactive HTML. It combines satisfaction signals, channel LTV and an RFM reading to prioritise which segments to activate, retain or monitor.',
+      'dataiku-proof-1':'paid-channel LTV',
+      'dataiku-proof-2':'email NPS, best channel',
+      'dataiku-proof-3':'of returns driven by organic',
+      'dataiku-insight':'I used RFM segmentation to separate high-value customers worth retaining from lower-quality organic cohorts, helping guide acquisition, CRM and retention trade-offs.',
       'exp-label':'Career','exp-title':'Professional <span>Experience</span>',
       'exp1-date':'Ongoing',
       'exp1-li1':'Deployment of AI tools (Microsoft Copilot) and integration into internal processes',
